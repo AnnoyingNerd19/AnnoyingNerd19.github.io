@@ -4,19 +4,9 @@
         <meta charset="UTF-8">
         <title>ГильдияСервер</title>
         <link rel="icon" href="https://i.redd.it/7kq5o9kx4u171.jpg" type="image/x-icon">
-        <style>
-            li {list-style-type: square;}
-            body {background-color: #002900; color: white;}
-            tr {text-align: center;}
-            a {color: yellow;}
-            a:hover {color: orange;}
-            a:visited {color: violet;}
-            a:active {color: red;}
-        </style>
     </head>
         <body>
             <a name=Оглавление></a><br>
-            <a href="Index.html">В Индекс</a>
             <h2>Добро пожаловать на официальный сайт гильдии!!! Чего желаете?</h2><br>
                 <ul>
                     <li><p><a href=#Хромосомы>Сколько хромосом у участников гильдии?</a></p>
