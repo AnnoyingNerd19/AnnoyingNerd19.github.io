@@ -2,7 +2,6 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>ГильдияСервер</title>
         <link rel="icon" href="https://i.redd.it/7kq5o9kx4u171.jpg" type="image/x-icon">
     </head>
         <body>
