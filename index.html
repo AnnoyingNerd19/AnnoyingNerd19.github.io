@@ -10,7 +10,7 @@
         <header>
             <a id="start"></a>
             <div class="topbar">
-                <button class="theme-toggle" id="themeToggle" type="button" aria-pressed="false">НЕ НАЖИМАТЬ</button>
+                <a class="theme-toggle" id="themeToggle" href="#" role="button" aria-pressed="false">НЕ НАЖИМАТЬ</a>
             </div>
             <div class="hero">
                 <p class="eyebrow">Discord server</p>
@@ -78,6 +78,24 @@
                     <p class="muted-note">
                         Не работает ссылка? Напиши в ЛС: `belgyt`, `annoyingnerd19`, `kotolezha1`, `donmaikl`.
                     </p>
+                </section>
+
+                <section id="widget" class="card">
+                    <h2>Discord Widget</h2>
+                    <p>
+                        Активность сервера в данный момент:
+                    </p>
+                    <div class="discord-widget-wrap">
+                        <iframe
+                            class="discord-widget"
+                            src="https://discord.com/widget?id=1318321478588039218&theme=dark"
+                            width="350"
+                            height="500"
+                            allowtransparency="true"
+                            frameborder="0"
+                            sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts">
+                        </iframe>
+                    </div>
                 </section>
 
                 <section id="rules" class="card">
@@ -213,6 +231,34 @@
                     </div>
                 </section>
 
+                <section id="minigame" class="card accent">
+                    <h2>Мини-игра</h2>
+                    <p>
+                        kolki81 загадал число от 1 до 15, попробуй угадай.
+                    </p>
+                    <div class="game-panel">
+                        <div class="game-stats">
+                            <div class="game-stat">
+                                <span>Попытки</span>
+                                <strong id="guessAttempts">0</strong>
+                            </div>
+                            <div class="game-stat">
+                                <span>Лучший результат</span>
+                                <strong id="guessBest">-</strong>
+                            </div>
+                        </div>
+                        <div class="game-controls">
+                            <label class="game-label" for="guessInput">Твоё число</label>
+                            <div class="game-input-row">
+                                <input id="guessInput" class="game-input" type="number" min="1" max="15" placeholder="1-15">
+                                <a href="#" id="guessButton" class="button-link primary game-button" role="button">Проверить</a>
+                                <a href="#" id="guessReset" class="button-link ghost game-button" role="button">Новая игра</a>
+                            </div>
+                        </div>
+                        <p id="guessMessage" class="game-message">kolki81 загадал число. Начинай.</p>
+                    </div>
+                </section>
+
                 <section id="members" class="card">
                     <h2>Staff сервера</h2>
                     <div class="team-grid">
@@ -300,6 +346,15 @@
         <script>
             const themeToggle = document.getElementById("themeToggle");
             const savedTheme = localStorage.getItem("guild-theme");
+            const guessInput = document.getElementById("guessInput");
+            const guessButton = document.getElementById("guessButton");
+            const guessReset = document.getElementById("guessReset");
+            const guessMessage = document.getElementById("guessMessage");
+            const guessAttempts = document.getElementById("guessAttempts");
+            const guessBest = document.getElementById("guessBest");
+            let secretNumber = Math.floor(Math.random() * 15) + 1;
+            let attempts = 0;
+            const savedBest = localStorage.getItem("guild-best-score");
 
             if (savedTheme === "light") {
                 document.body.dataset.theme = "light";
@@ -307,7 +362,12 @@
                 themeToggle.setAttribute("aria-pressed", "true");
             }
 
-            themeToggle.addEventListener("click", () => {
+            if (savedBest) {
+                guessBest.textContent = savedBest;
+            }
+
+            themeToggle.addEventListener("click", (event) => {
+                event.preventDefault();
                 const isLight = document.body.dataset.theme === "light";
 
                 if (isLight) {
@@ -320,6 +380,53 @@
                     localStorage.setItem("guild-theme", "light");
                     themeToggle.textContent = "Темная тема";
                     themeToggle.setAttribute("aria-pressed", "true");
+                }
+            });
+
+            function resetGame() {
+                secretNumber = Math.floor(Math.random() * 15) + 1;
+                attempts = 0;
+                guessAttempts.textContent = "0";
+                guessMessage.textContent = "Сервер загадал новое число. Начинай.";
+                guessInput.value = "";
+            }
+
+            function submitGuess(event) {
+                event.preventDefault();
+                const value = Number(guessInput.value);
+
+                if (!value || value < 1 || value > 15) {
+                    guessMessage.textContent = "Введи число от 1 до 15.";
+                    return;
+                }
+
+                attempts += 1;
+                guessAttempts.textContent = String(attempts);
+
+                if (value === secretNumber) {
+                    guessMessage.textContent = "Хорош. Ты угадал. kolki81 доволен.";
+                    const currentBest = Number(localStorage.getItem("guild-best-score"));
+
+                    if (!currentBest || attempts < currentBest) {
+                        localStorage.setItem("guild-best-score", String(attempts));
+                        guessBest.textContent = String(attempts);
+                    }
+                    return;
+                }
+
+                guessMessage.textContent = value < secretNumber
+                    ? "Маловато. Бери выше."
+                    : "Слишком много. Бери ниже.";
+            }
+
+            guessButton.addEventListener("click", submitGuess);
+            guessReset.addEventListener("click", (event) => {
+                event.preventDefault();
+                resetGame();
+            });
+            guessInput.addEventListener("keydown", (event) => {
+                if (event.key === "Enter") {
+                    submitGuess(event);
                 }
             });
         </script>
