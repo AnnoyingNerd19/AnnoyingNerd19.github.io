@@ -9,6 +9,9 @@
     <body>
         <header>
             <a id="start"></a>
+            <div class="topbar">
+                <button class="theme-toggle" id="themeToggle" type="button" aria-pressed="false">НЕ НАЖИМАТЬ</button>
+            </div>
             <div class="hero">
                 <p class="eyebrow">Discord server</p>
                 <h1>Гильдия</h1>
@@ -59,7 +62,7 @@
                         </div>
                         <div class="mini-card">
                             <h3>Атмосфера</h3>
-                            <p>Свободное общение с уважением (кроме колки).</p>
+                            <p>Свободное общение с уважением (кроме kolki81).</p>
                         </div>
                     </div>
                 </section>
@@ -120,7 +123,7 @@
 Воспроизводить громкие, резкие, и/или неприятные звуки запрещено, наказание на усмотрение модерации.</p>
                         </div>
                         <div class="mini-card">
-                            <h3>3. Профили</h3>
+                            <h3>4. Профили</h3>
                             <p>Просьба В ПРИНЦИПЕ адекватно настраивать свой профиль, профили, продвигающие то, что запрещено выше - ЗАПРЕЩЕНЫ.
 Наказание - варн, если человек отказывается менять профиль - бан</p>
                         </div>
@@ -294,5 +297,31 @@
         <nav class="tostart">
             <a href="#start">Наверх</a>
         </nav>
+        <script>
+            const themeToggle = document.getElementById("themeToggle");
+            const savedTheme = localStorage.getItem("guild-theme");
+
+            if (savedTheme === "light") {
+                document.body.dataset.theme = "light";
+                themeToggle.textContent = "Темная тема";
+                themeToggle.setAttribute("aria-pressed", "true");
+            }
+
+            themeToggle.addEventListener("click", () => {
+                const isLight = document.body.dataset.theme === "light";
+
+                if (isLight) {
+                    document.body.dataset.theme = "dark";
+                    localStorage.setItem("guild-theme", "dark");
+                    themeToggle.textContent = "НЕ НАЖИМАТЬ";
+                    themeToggle.setAttribute("aria-pressed", "false");
+                } else {
+                    document.body.dataset.theme = "light";
+                    localStorage.setItem("guild-theme", "light");
+                    themeToggle.textContent = "Темная тема";
+                    themeToggle.setAttribute("aria-pressed", "true");
+                }
+            });
+        </script>
     </body>
 </html>
